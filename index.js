@@ -66,5 +66,6 @@ app.use("/check", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server listening on ${domain}`);
+  console.log(`Server listening on port ${PORT}`);
+  console.log(`Server working on ${domain}`);
 });
