@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { fileURLToPath } from "url";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const domain = "https://genimgurl-production.up.railway.app";
 
@@ -22,6 +22,10 @@ app.post("/snapshot", async (req, res) => {
     return res.status(400).json({ error: "Missing mediaUrl!" });
   }
 
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
+  }
+
   const newSeries = [];
 
   await Promise.all(
@@ -31,10 +35,6 @@ app.post("/snapshot", async (req, res) => {
         const outputDir = path.join(__dirname, "images");
         const outputPath = path.join(outputDir, `${id}.jpg`);
         const startTimeMs = item.startTimeMs;
-
-        if (!fs.existsSync(outputDir)) {
-          fs.mkdirSync(outputDir);
-        }
 
         const command = `ffmpeg -ss ${
           startTimeMs / 1000
