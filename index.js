@@ -22,6 +22,7 @@ app.post("/snapshot", async (req, res) => {
     return res.status(400).json({ error: "Missing mediaUrl!" });
   }
 
+  const outputDir = path.join(__dirname, "images");
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
   }
@@ -32,7 +33,7 @@ app.post("/snapshot", async (req, res) => {
     series.map((item) => {
       return new Promise((resolve, reject) => {
         const id = uuidv4();
-        const outputDir = path.join(__dirname, "images");
+
         const outputPath = path.join(outputDir, `${id}.jpg`);
         const startTimeMs = item.startTimeMs;
 
