@@ -8,6 +8,8 @@ import { fileURLToPath } from "url";
 const app = express();
 const PORT = 3000;
 
+const domain = "https://genimgurl-production.up.railway.app";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -44,7 +46,7 @@ app.post("/snapshot", async (req, res) => {
             return reject(err);
           }
 
-          const imageUrl = `http://localhost:${PORT}/images/${id}.jpg`;
+          const imageUrl = `${domain}/images/${id}.jpg`;
           newSeries.push({
             ...item,
             imageUrl,
@@ -59,7 +61,10 @@ app.post("/snapshot", async (req, res) => {
 });
 
 app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/check", async (req, res) => {
+  res.json({ status: "ok" });
+});
 
 app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+  console.log(`Server listening on ${domain}`);
 });
